@@ -1,0 +1,25 @@
+{% extends "core/base.html" %}
+
+{% block content %}
+    <div class="card card-primary col-sm-11 m-auto p-0">
+        <div class="card-header">
+            <h4 class="">
+                {% if addressees %}
+                    {{ title }}
+                {% else %}
+                    ¿Esta seguro de querer pagar el {{ title }}?
+                {% endif %}
+            </h4>
+        </div>
+        <form  method="post">
+            {% csrf_token %}
+
+            <div class="modal-footer">
+                <a class="btn btn-secondary" href="{{ list }}">Cancelar</a>
+                <button type="submit" class="btn btn-danger"> Aceptar</a>
+            </div>
+
+        </form>
+
+    </div>
+{% endblock content %}

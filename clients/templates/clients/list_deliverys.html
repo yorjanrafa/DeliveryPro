@@ -1,0 +1,121 @@
+{% extends 'core/list_datatable_without_pdf.html' %}
+
+{% load static %}
+<link rel="stylesheet" href="{% static 'core/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css' %}">
+<script src="{% static 'core/plugins/sweetalert2/sweetalert2.min.js' %}"></script>
+
+
+
+{% block title %}
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'core/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css' %}">
+
+    <script src="{% static 'core/plugins/sweetalert2/sweetalert2.min.js' %}"></script>
+
+    {% if messages %}
+        {% for m in messages %}
+            <script>
+                Swal.fire({
+                    "title": "{{ m }}",
+                    "icon": "success",
+                })
+            </script>
+        {% endfor %}
+    {% endif %}
+
+
+    <h4 class="">
+        {% if deliverys %}
+            {{ title }}
+        {% else %}
+            {{ title_deliverys_not_found }}
+        {% endif %}
+    </h4>
+{% endblock title %}
+
+<!-- /.card-header -->
+
+
+{% block table_header %}
+    <!-- <th>Dirección</th> -->
+    <th>Consumidor</th>
+    <th>Dirección</th>
+    <th>Servicio</th>
+    <th>Envio</th>
+    <th>Debe</th>
+    <th>Estado</th>
+    <th>Fecha</th>
+    <th>Hora</th>
+    <th>Recibido</th>
+    <th>Repartidor</th>
+    <th>Centralista</th>
+    <th>Opciones</th>
+    <!-- <th>Repartidor</th> -->
+{% endblock table_header %}
+
+{% block table_body %}
+
+    {% for delivery in deliverys reversed %}
+        <tr>
+            <td>{{ delivery.addressee_data }}</td>
+            <td>{{ delivery.destiny }}</td>
+            <!-- <td>{ delivery.destiny }}</td> -->
+            <td>{{ delivery.type_service }} </td>
+            <td>{{ delivery.type_delivery }} </td>
+            <td>{{ delivery.type_delivery_amount }} </td>
+            <td>{{ delivery.status_delivery|yesno:'Pagado,Pendiente' }}</td>
+            <td>{{ delivery.date|date:'d/M/Y' }}</td>
+            <td>{{ delivery.time }}</td>
+            <td class="
+                {% if delivery.recieved_money == 0  %}
+                    text-black
+                {% elif delivery.status_recieved_money %}
+                    text-green
+                {% else %}
+                    text-red
+                {% endif %}
+            ">
+                {{ delivery.recieved_money }}$
+            </td>
+            <!-- <td>{ delivery.distributing }}</td> -->
+
+            <td>
+                {{ delivery.distributing }}
+            </td>
+            <td>
+                {{ delivery.centralist|title }}
+            </td>
+            <td>
+                <a href="{% url 'delivery:edit' delivery.id %}">
+                    <button
+                        type="button"
+                        class="btn bg-warning btn-xs">
+                        Editar
+                    </button>
+                </a>
+                <a href="{% url 'delivery:delete' delivery.id %}">
+                    <button
+                        type="button"
+                        class="btn bg-danger btn-xs">
+                        Eliminar
+                    </button>
+                </a></a>
+
+
+            {% if not delivery.status_delivery %}
+                <a href="{% url 'delivery:to-pay' delivery.id %}">
+                    <button
+                        type="button"
+                        class="btn bg-success btn-xs">
+                        Pagar
+                    </button>
+                </a>
+            {% endif %}
+
+        </td>
+        </tr>
+    {% endfor %}
+{% endblock table_body %}
+
+
+

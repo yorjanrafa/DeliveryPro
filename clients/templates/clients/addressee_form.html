@@ -1,0 +1,14 @@
+{% extends 'core/form.html' %}
+
+{% block title %}
+    {{ title_form }}
+{% endblock title %}
+
+{% load crispy_forms_tags %}
+{% block form %}
+    {{ form | crispy }}
+    <!-- { form.data_addressee }} -->
+    <!-- { form.destiny }} -->
+    <!-- { form.google_map }} -->
+{% endblock form %}
+

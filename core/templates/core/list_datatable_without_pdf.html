@@ -1,0 +1,92 @@
+{% extends 'core/base.html' %}
+<!-- DataTables -->
+{% block content %}
+    {% block extra_styles %}
+        {% load static %}
+
+        <link
+            rel="stylesheet"
+            href="{% static 'core/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css' %}"
+        />
+        <link
+            rel="stylesheet"
+            href="{% static 'core/plugins/datatables-responsive/css/responsive.bootstrap4.min.css' %}"
+        />
+        <link
+            rel="stylesheet"
+            href="{% static 'core/plugins/datatables-buttons/css/buttons.bootstrap4.min.css' %}"
+        />
+
+    {% endblock extra_styles %}
+
+    <div class="card" style="width : 100%;">
+
+        <div class="card-header p-4 bg-dark">
+            {% block title %}
+
+            {% endblock title %}
+        </div>
+        <!-- /.card-header -->
+        <div class="card-body">
+            <div id="example1_wrapper" class="dataTables_wrapper dt-bootstrap4">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <table
+                            id="example1"
+                            class="table table-bordered table-striped dataTable dtr-inline table-hover"
+                            aria-describedby="example1_info"
+                        >
+                            <thead>
+                                <tr>
+                                    {% block table_header %}
+
+                                    {% endblock table_header %}
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% block table_body %}
+
+                                {% endblock table_body %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /.card-body -->
+    </div>
+
+
+    {% block extra_script %}
+
+        <!-- jQuery -->
+        <!-- DataTables  & Plugins -->
+
+        <script src="{% static 'core/plugins/datatables/jquery.dataTables.js' %}"></script>
+        <script src="{% static 'core/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js' %}"></script>
+        <script src="{% static 'core/plugins/datatables-responsive/js/dataTables.responsive.min.js' %}"></script>
+        <script src="{% static 'core/plugins/datatables-responsive/js/responsive.bootstrap4.min.js' %}"></script>
+
+        <script>
+            $(function () {
+                $("#example1").DataTable({
+                    "responsive": true, "lengthChange": false, "autoWidth": false,
+                }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
+                $('#example2').DataTable({
+                    "paging": true,
+                    "lengthChange": false,
+                    "searching": false,
+                    "ordering": true,
+                    "info": true,
+                    "autoWidth": true,
+                    "responsive": true,
+                });
+            });
+        </script>
+
+
+
+
+
+    {% endblock extra_script %}
+{% endblock content %}

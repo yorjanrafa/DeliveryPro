@@ -1,0 +1,33 @@
+{% extends 'core/form.html' %}
+
+{% block title %}
+    {{ title_form }}
+
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'core/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css' %}">
+    <script src="{% static 'core/plugins/sweetalert2/sweetalert2.min.js' %}"></script>
+
+    {% if messages %}
+        {% for m in messages %}
+            <script>
+                Swal.fire({
+                    "title": "{{ m }}",
+                    "icon": "success",
+                })
+            </script>
+        {% endfor %}
+    {% endif %}
+{% endblock title %}
+
+{% load crispy_forms_tags %}
+{% block form %}
+    {{ form | crispy }}
+{% endblock form %}
+
+{% block accept_and_continue %}
+    {% if accept_and_continue %}
+        <input  class="btn btn-success btn-user" type="submit" value="Aceptar y continuar" name="accept">
+    {% endif %}
+{% endblock accept_and_continue %}
+
+

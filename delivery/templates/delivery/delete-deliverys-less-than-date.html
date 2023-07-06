@@ -1,0 +1,96 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+
+    {% load static %}
+
+    <link rel="stylesheet" href="{% static 'core/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css' %}">
+    <script src="{% static 'core/plugins/sweetalert2/sweetalert2.min.js' %}"></script>
+    {% if messages %}
+        {% for m in messages %}
+            {% if m.tags == 'success' %}
+                <script>
+                    Swal.fire({
+                        "title": "{{ m }}",
+                        "icon": "success",
+                    })
+                </script>
+
+
+            {% endif %}
+            {% if m.tags == 'error' %}
+                <script>
+                    Swal.fire({
+                        "title": "{{ m }}",
+                        "icon": "error",
+                    })
+                </script>
+
+
+            {% endif %}
+            {% if m.tags == 'info' %}
+                <script>
+                    Swal.fire({
+                        "title": "{{ m }}",
+                        "icon": "info",
+                    })
+                </script>
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+
+
+
+    <div class="card col-sm-12 p-0">
+        <div class="card-header bg-primary p-4">
+            <h4 class="">
+                Eliminar envios de "{{ client }}" mas antiguos a una fecha determinada
+            </h4>
+            <h5>Solo se eliminaran los envios que esten pagos</h5>
+        </div>
+
+        <form action="" request="GET" >
+            {% csrf_token %}
+            <div class="form-group card-body">
+
+                <label>Fecha </label>
+                <div class="input-group date" data-target-input="nearest">
+                    <input class="form-control datetimepicker-input" data-target="#reservationdatetime" type="date" id="id_date" name="date">
+                    <div class="input-group-append" data-target="#reservationdatetime" data-toggle="datetimepicker">
+                        <div class="input-group-text">
+                            <i class="fa fa-calendar">
+                            </i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer py-4">
+                <button type="submit" class="btn btn-block btn-primary">Buscar</button>
+            </div>
+        </form>
+
+
+    </div>
+    {% if messages %}
+        {% for m in messages %}
+            {% if m.tags == 'error' %}
+                <script>
+                    Swal.fire({
+                        "title": "{{ m }}",
+                        "icon": "error",
+                    })
+                </script>
+
+
+            {% endif %}
+            {% if m.tags == 'info' %}
+                <script>
+                    Swal.fire({
+                        "title": "{{ m }}",
+                        "icon": "info",
+                    })
+                </script>
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+{% endblock content %}

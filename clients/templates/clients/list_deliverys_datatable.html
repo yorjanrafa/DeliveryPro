@@ -1,0 +1,69 @@
+{% extends 'core/list_datatable.html' %}
+
+{% block title_page %}
+    
+{% endblock title_page %}
+
+<!-- DataTables -->
+{% block title %}
+    <h4 id="title_form_date">Envios de {{ client }} desde </h4>
+    <hr class="text-white bg-white">
+    <h5>{{debit}}</h5>
+    <script>
+        // este script se encarga de transformar las fechas de yyyy/mm/dd
+        // a dd/mm/yyyy para luego colocarlo como titulo
+        const title_form_date = document.querySelector("#title_form_date");
+        dates = {
+            date_init: "{{ date_init }}",
+            "date-finish": "{{ date_finish }}",
+        };
+        client = "{{ client }}";
+        arryDates = [];
+        for (d in dates) {
+            str = String(dates[d]).split("-").reverse().join("/");
+            arryDates.push(str);
+        }
+
+        const title = `${arryDates[0]} hasta ${arryDates[1]}`;
+        title_form_date.textContent += title;
+    </script>
+
+
+{% endblock title %}
+<!-- /.card-header -->
+{% block table_header %}
+    <th>Consumidor</th>
+    <th>Dirección</th>
+    <th>Servicio</th>
+    <th>Tipo</th>
+    <th>Debe</th>
+    <th>Estado</th>
+    <th>Fecha</th>
+    <th>Repartidor</th>
+
+
+{% endblock table_header %}
+
+{% block table_body %}
+    {% for delivery in deliverys reversed %}
+
+        <tr>
+            <td>{{ delivery.addressee_data }}</td>
+            <td>{{ delivery.destiny }}</td>
+            <td>{{ delivery.type_service }}</td>
+            <td>{{ delivery.type_delivery }}</td>
+            <td>{{ delivery.type_delivery_amount }}</td>
+            <td>{{ delivery.status_delivery|yesno:'Pagado,Pendiente' }}</td>
+            <td>{{ delivery.date|date:'d/M/Y' }}</td>
+            <td>{{ delivery.distributing }}</td>
+            <!-- <td>{.{ delivery.time }}</td> -->
+            <!-- <td -->
+            <!--   class="{.% if delivery.recieved_money == 0 %} text-black {.% elif delivery.status_recieved_money %} text-green {.% else %} text-red {.% endif %}" -->
+            <!-- > -->
+            <!--   {.{ delivery.recieved_money }}$ -->
+            <!-- </td> -->
+            <!-- </tr> -->
+        </tr>
+    {% endfor %}
+{% endblock table_body %}
+

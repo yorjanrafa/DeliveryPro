@@ -1,0 +1,67 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'core/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css' %}">
+    <script src="{% static 'core/plugins/sweetalert2/sweetalert2.min.js' %}"></script>
+
+
+
+
+    <div class="card col-sm-12 p-0">
+        <div class="card-header bg-primary p-4">
+            <h4 class="">
+                Filtrar envios por fecha de {{client}}
+            </h4>
+        </div>
+
+        <form action="" request="GET" class="p-4">
+            <div class="form-group">
+
+                <label>Fecha inicial</label>
+                <div class="input-group date" data-target-input="nearest">
+                    <input class="form-control datetimepicker-input" data-target="#reservationdatetime" type="date" id="id_date_init" name="date_init">
+                    <div class="input-group-append" data-target="#reservationdatetime" data-toggle="datetimepicker">
+                        <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Fecha final</label>
+                <div class="input-group date" data-target-input="nearest">
+                    <input class="form-control datetimepicker-input" data-target="#reservationdatetime" type="date" id="id_date_finish" name="date_finish">
+                    <div class="input-group-append" data-target="#reservationdatetime" data-toggle="datetimepicker">
+                        <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                    </div>
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-block btn-primary">Buscar</button>
+        </form>
+
+
+    </div>
+    {% if messages %}
+        {% for m in messages %}
+            {% if m.tags == 'error' %}
+                <script>
+                    Swal.fire({
+                        "title": "{{ m }}",
+                        "icon": "error",
+                    })
+                </script>
+
+
+            {% endif %}
+            {% if m.tags == 'info' %}
+                <script>
+                    Swal.fire({
+                        "title": "{{ m }}",
+                        "icon": "info",
+                    })
+                </script>
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+{% endblock content %}

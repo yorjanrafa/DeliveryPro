@@ -1,0 +1,60 @@
+{% extends "core/list.html" %}
+{% if addressees %}
+
+    {% block title %}
+        {{ title }}
+    {% endblock title %}
+
+    {% block table %}
+        <thead>
+            <tr >
+                <th>Consumidor</th>
+                <th>Dirección</th>
+                <th>Opciones</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            {% for addressee in addressees reversed %}
+                <tr>
+                    <td>{{ addressee.data_addressee }}</td>
+                    <td>{{ addressee.destiny }}</td>
+                    <td>
+                        <a href="{% url 'delivery:new' %}">
+                            <button
+                                type="button"
+                                class="btn btn-inline bg-warning btn-xs">
+                                Editar
+                            </button>
+                        </a>
+                    </td>
+                </tr>
+            {% endfor %}
+
+            {% if messages %}
+                {% for m in messages %}
+                    <script>
+                        Swal.fire({
+                            "title": "{{ m }}",
+                            "icon": "success",
+                        })
+                    </script>
+                {% endfor %}
+            {% endif %}
+        </tbody>
+    {% endblock table %}
+
+{% else %}
+
+    {% block content %}
+        <div class="col-xl-12">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="">
+                        No hay consumidores registrados para este cliente.
+                    </h4>
+                </div>
+            </div>
+        </div>
+    {% endblock content %}
+{% endif %}

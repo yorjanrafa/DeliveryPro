@@ -1,0 +1,269 @@
+{% load static %}
+<aside class="main-sidebar sidebar-dark-primary elevation-4">
+    <!-- Brand Logo -->
+    <a href="{% url 'home' %}" class="brand-link">
+        <img
+            src="{% static 'core/dist/img/logo/dp.jpg' %}"
+            alt="AdminLTE Logo"
+            class="brand-image img-circle"
+        />
+        <span class="brand-text font-weight-800">DeliveryPro</span>
+    </a>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <!-- Sidebar user panel (optional) -->
+        <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+            <div class="image">
+                <img
+                    src="{% static 'core/dist/img/avatar5.png' %}"
+                    class="img-circle elevation-2"
+                    alt="User Image"
+                />
+            </div>
+            <div class="info">
+                <!-- <a href="#" class="d-block">Sandoval Yorjan</a> -->
+                <a href="#" class="d-block">{{request.user.username|capfirst }}</a>
+            </div>
+        </div>
+
+        <!-- <!-1- SidebarSearch Form -1-> -->
+        <!-- <div class="form-inline"> -->
+        <!--   <div class="input-group" data-widget="sidebar-search"> -->
+        <!--     <input -->
+        <!--       class="form-control form-control-sidebar" -->
+        <!--       type="search" -->
+        <!--       placeholder="Search" -->
+        <!--       aria-label="Search" -->
+        <!--     /> -->
+        <!--     <div class="input-group-append"> -->
+        <!--       <button class="btn btn-sidebar"> -->
+        <!--         <i class="fas fa-search fa-fw"></i> -->
+        <!--       </button> -->
+        <!--     </div> -->
+        <!--   </div> -->
+        <!-- </div> -->
+
+        <!-- Sidebar Menu -->
+        <nav class="mt-2">
+            <ul
+                class="nav nav-pills nav-sidebar flex-column"
+                data-widget="treeview"
+                role="menu"
+                data-accordion="false"
+            >
+                <!-- Add icons to the links using the .nav-icon class
+               with font-awesome or any other icon font library -->
+
+                <li class="nav-item">
+                    <a href="{% url 'home' %}" class="nav-link {% if request.path == '/' %}active{% endif %}">
+                        <i class="nav-icon fas fa-home"></i>
+                        <p>
+                            Inicio
+                        </p>
+                    </a>
+                </li>
+
+                <!-- Ojo aca asi es como se mantiene abierto el menu -->
+                <!-- <li class="nav-item menu-closed"> -->
+
+                <li class="nav-item {% if request.path == '/clients/new' or '/clients/list' == request.path  %}menu-is-opening menu-open{% endif %} ">
+                    <a href="#" class="nav-link {% if request.path == '/clients/new' or '/clients/list' == request.path %}active{% endif %}">
+                        <i class="nav-icon fas fa-cubes"></i>
+                        <p>
+                            Clientes
+                            <i class="right fas fa-angle-left"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="{% url 'clients:list' %}" class="nav-link {% if request.path == '/clients/list' %}active{% endif %}">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Listado</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{% url 'clients:new' %}" class="nav-link {% if request.path == '/clients/new' %}active{% endif %}">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Añadir</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
+                <li class="nav-item ">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon fas fa-map"></i>
+                        <p>
+                            Mapas
+                            <i class="right fas fa-angle-left"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="{% url 'map-east' %}" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Este</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{% url 'map-weast' %}" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Oeste</p>
+                            </a>
+                        </li>
+  <li class="nav-item">
+                            <a href="{% url 'map-center' %}" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>centro</p>
+                            </a>
+                        </li>
+
+                    </ul>
+                </li>
+                <li class="nav-item {% if request.path == '/clients/list-all-addressee' %}menu-is-opening menu-open{% endif %} ">
+                    <a href="#" class="nav-link {% if request.path == '/clients/list-all-addressee' %}active{% endif %}">
+                        <i class="nav-icon fas fa-star"></i>
+                        <p>
+                            Consumidores frecuentes
+                            <i class="right fas fa-angle-left"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="{% url 'clients:list-all-addressee' %}" class="nav-link {% if request.path == '/clients/list-all-addressee' %}active{% endif %}">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Todos (listado)</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
+
+                <li class="nav-item ">
+                    <a href="#" class="nav-link ">
+                        <i class="nav-icon fas fa-location-arrow"></i>
+                        <p>
+                            Envios
+                            <i class="right fas fa-angle-left"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="{% url 'delivery:not-paid' %}" class="nav-link ">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Pendientes</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{% url 'delivery:paid' %}" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Pagados</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{% url 'delivery:all' %}" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Todos</p>
+                            </a>
+                        </li>
+
+                    </ul>
+                </li>
+
+
+                <li class="nav-item {% if request.path == '/workers/new' or '/workers/list' == request.path  %}menu-is-opening menu-open{% endif %}">
+                    <a href="#" class="nav-link {% if request.path == '/workers/new' or '/workers/list' == request.path  %}active{% endif %}">
+                        <i class="nav-icon fas fa-motorcycle"></i>
+                        <p>
+                            Trabajadores
+                            <i class="right fas fa-angle-left"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="{% url 'workers:list' %} " class="nav-link {% if request.path == '/workers/list' %}active{% endif %}">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Listado</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{% url 'workers:new' %}" class="nav-link  {% if request.path == '/workers/new' %}active{% endif %}">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Añadir</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
+
+
+                {% if user.is_superuser %}
+                    <li class="nav-item ">
+                        <a href="#" class="nav-link ">
+                            <i class="nav-icon fas fa-user-shield"></i>
+                            <p>
+                                Administrador
+                                <i class="right fas fa-angle-left"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                                <a href="/admin" class="nav-link ">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Panel</p>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                {%  endif %}
+
+                <li class="nav-item ">
+                    <a href="#" class="nav-link ">
+                        <i class="nav-icon fas fa-walking"></i>
+                        <p>
+                            Sesión
+                            <i class="right fas fa-angle-left"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a type="button" class="nav-link" data-toggle="modal" data-target="#logoutModal">
+                                <i class="nav-icon fas fa-sign-out-alt"></i>
+                                <p>Salir</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
+                <!-- <li class="nav-item"> -->
+                <!--     <a href="#" class="nav-link "> -->
+                <!--         <i class="nav-icon fas fa-users"></i> -->
+                <!--         <p> -->
+                <!--             Usuarios -->
+                <!--             <i class="right fas fa-angle-left"></i> -->
+                <!--         </p> -->
+                <!--     </a> -->
+                <!--     <ul class="nav nav-treeview"> -->
+                <!--         <li class="nav-item"> -->
+                <!--             <a href="#" class="nav-link "> -->
+                <!--                 <i class="far fa-circle nav-icon"></i> -->
+                <!--                 <p>Active Page</p> -->
+                <!--             </a> -->
+                <!--         </li> -->
+                <!--         <li class="nav-item"> -->
+                <!--             <a href="#" class="nav-link"> -->
+                <!--                 <i class="far fa-circle nav-icon"></i> -->
+                <!--                 <p>Inactive Page</p> -->
+                <!--             </a> -->
+                <!--         </li> -->
+                <!--     </ul> -->
+                <!-- </li> -->
+
+
+            </ul>
+        </nav>
+        <!-- /.sidebar-menu -->
+    </div>
+    <!-- /.sidebar -->
+</aside>

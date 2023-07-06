@@ -1,0 +1,108 @@
+{% extends 'core/list.html' %}
+
+{% block list %}
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'core/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css' %}">
+    <script src="{% static 'core/plugins/sweetalert2/sweetalert2.min.js' %}"></script>
+
+
+    <div class="col-xl-12">
+        <div class="card">
+            <div class="card-header bg-dark p-4">
+                <h3>
+                    {% if addressees %}
+                        {{ title }}
+                    {% else %}
+                        No hay consumidores registrados para este cliente
+                    {% endif %}
+                </h3>
+            </div>
+            <!-- /.card-header -->
+            {% if addressees %}
+
+                <div class="card-body p-0">
+                    <table class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th>Consumidor</th>
+                                <th>Dirección</th>
+                                <th>Foto</th>
+                                <th>Geolocalización</th>
+                                <th>Opciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for addressee in addressees reversed %}
+                                <tr>
+                                    <td>{{ addressee.data_addressee }}</td>
+                                    <td>{{ addressee.destiny }}</td>
+                                    <td><a target="_blank" href="/media/{{addressee.photo}}">Ver foto</<a></td>
+                                    <td><a target="_blank" href="{{addressee.google_map}}">GoogleMap</<a></td>
+                                    <td>
+                                        <a href="{% url 'delivery:new-delivery-to-addressee' addressee.id %}">
+                                            <button
+                                                type="button"
+                                                class="btn btn-inline bg-primary btn-xs">
+                                                Nuevo envio
+                                            </button>
+                                        </a>
+
+                                        <a href="{% url 'clients:edit-addressee' addressee.id %}">
+                                            <button
+                                                type="button"
+                                                class="btn btn-inline bg-warning btn-xs">
+                                                Editar
+                                            </button>
+                                        </a>
+                                        {% if user.is_superuser %}
+
+                                            <a href="{% url 'clients:delete-addressee' addressee.id %}">
+                                                <button
+                                                    type="button"
+                                                    class="btn btn-inline bg-danger btn-xs">
+                                                    Eliminar
+                                                </button>
+                                            </a>
+
+                                        {% endif %}
+                                    </td>
+
+                                </tr>
+                            {% endfor %}
+                            {% if messages %}
+                                {% for m in messages %}
+                                    {% if m.tags == 'success' %}
+                                        <script>
+                                            Swal.fire({
+                                                "title": "{{ m }}",
+                                                "icon": "success",
+                                            })
+                                        </script>
+
+
+                                    {% endif %}
+                                {% endfor %}
+                            {% endif %}
+
+
+                        </tbody>
+                    </table>
+                </div>
+                <!-- /.card-body -->
+                <div class="card-footer clearfix">
+                    <ul class="pagination pagination-sm m-0 float-right">
+                        <li class="page-item"><a class="page-link" href="#">«</a></li>
+                        <li class="page-item"><a class="page-link" href="#">1</a></li>
+                        <li class="page-item"><a class="page-link" href="#">2</a></li>
+                        <li class="page-item"><a class="page-link" href="#">3</a></li>
+                        <li class="page-item"><a class="page-link" href="#">»</a></li>
+                    </ul>
+                </div>
+
+            {% endif %}
+        </div>
+        <!-- /.card -->
+    </div>
+
+{% endblock list %}
+

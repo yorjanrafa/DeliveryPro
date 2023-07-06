@@ -1,0 +1,106 @@
+
+{% extends 'core/list_datatable_without_pdf.html' %}
+{% block title_page %}
+
+{% endblock title_page %}
+
+{% block title %}
+    <h3>Listado de pagos de {{ client }}</h3>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'core/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css' %}">
+
+    <script src="{% static 'core/plugins/sweetalert2/sweetalert2.min.js' %}"></script>
+
+    {% if messages %}
+        {% for m in messages %}
+            {% if m.tags == 'error' %}
+                <script>
+                    Swal.fire({
+                        "title": "{{ m }}",
+                        "icon": "error",
+                    })
+                </script>
+
+
+            {% endif %}
+            {% if m.tags == 'info' %}
+                <script>
+                    Swal.fire({
+                        "title": "{{ m }}",
+                        "icon": "info",
+                    })
+                </script>
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+
+
+{% endblock title %}
+
+{% block table_header %}
+    <th
+        class="sorting sorting_asc"
+        tabindex="0"
+        aria-controls="example1"
+        rowspan="1"
+        colspan="1"
+        aria-sort="ascending"
+        aria-label="Destinatario: activate to sort column descending"
+    >
+        Monto
+    </th>
+    <th
+        class="sorting sorting_asc"
+        tabindex="0"
+        aria-controls="example1"
+        rowspan="1"
+        colspan="1"
+        aria-sort="ascending"
+        aria-label="Destinatario: activate to sort column descending"
+    >
+        Fecha
+    </th>
+    <th
+        class="sorting sorting_asc"
+        tabindex="0"
+        aria-controls="example1"
+        rowspan="1"
+        colspan="1"
+        aria-sort="ascending"
+        aria-label="Destinatario: activate to sort column descending"
+    >
+        Hora
+    </th>
+    <th
+        class="sorting sorting_asc"
+        tabindex="0"
+        aria-controls="example1"
+        rowspan="1"
+        colspan="1"
+        aria-sort="ascending"
+        aria-label="Destinatario: activate to sort column descending"
+    >
+        Centralista
+    </th>
+
+
+
+{% endblock table_header %}
+
+
+{% block table_body %}
+
+    {% for payment in payments reversed %}
+        <tr>
+            <td>{{ payment.amount }}</td>
+            <td>{{ payment.date }}</td>
+            <td>{{ payment.time }}</td>
+            <td>{{ payment.centralist|title }}</td>
+        </tr>
+    {% endfor %}
+
+{% endblock table_body %}
+
+
+
+

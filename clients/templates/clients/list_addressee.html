@@ -1,0 +1,100 @@
+{% extends 'core/list_datatable_without_pdf.html' %}
+
+{% block list %}
+    {% block title %}
+        <h3 class="">
+            {% if addressees %}
+                {{ title }}
+            {% else %}
+                No hay consumidores registrados para este cliente
+            {% endif %}
+            {% load static %}
+            <link rel="stylesheet" href="{% static 'core/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css' %}">
+            <script src="{% static 'core/plugins/sweetalert2/sweetalert2.min.js' %}"></script>
+
+
+            {% if messages %}
+                {% for m in messages %}
+                    {% if m.tags == 'success' %}
+                        <script>
+                            Swal.fire({
+                                "title": "{{ m }}",
+                                "icon": "success",
+                            })
+                        </script>
+
+
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
+
+
+        </h3>
+
+    {% endblock title %}
+
+    {% block table_header %}
+        <th>Consumidor</th>
+        <th>Dirección</th>
+        <th>Foto</th>
+        <th>Geolocalización</th>
+        <th>Opciones</th>
+    {% endblock table_header %}
+
+
+    {% block table_body %}
+        {% for addressee in addressees reversed %}
+            <tr>
+                <td>{{ addressee.data_addressee }}</td>
+                <td>{{ addressee.destiny }}</td>
+
+                <td>
+                    {% if addressee.photo %}
+                        <a target="_blank" href="/media/{{ addressee.photo }}">Foto<a>             {% else %}
+                        Sin foto
+                    {% endif %}
+                </td>
+                <td>
+                    {% if addressee.photo %}
+                        <a target="_blank" href="{{ addressee.google_map }}">GoogleMap</a>
+                    {% else %}
+                        Sin googleMap
+                    {% endif %}
+                </td>
+
+                <td>
+                    <a href="{% url 'delivery:new-delivery-to-addressee' addressee.id %}">
+                        <button
+                            type="button"
+                            class="btn btn-inline bg-primary btn-xs">
+                            Nuevo envio
+                        </button>
+                    </a>
+
+                    <a href="{% url 'clients:edit-addressee' addressee.id %}">
+                        <button
+                            type="button"
+                            class="btn btn-inline bg-warning btn-xs">
+                            Editar
+                        </button>
+                    </a>
+                    {% if user.is_superuser %}
+
+                        <a href="{% url 'clients:delete-addressee' addressee.id %}">
+                            <button
+                                type="button"
+                                class="btn btn-inline bg-danger btn-xs">
+                                Eliminar
+                            </button>
+                        </a>
+
+                    {% endif %}
+                </td>
+
+            </tr>
+        {% endfor %}
+
+    {% endblock table_body %}
+
+{% endblock list %}
+

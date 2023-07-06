@@ -1,0 +1,125 @@
+
+{% extends 'core/list_datatable_without_pdf.html' %}
+{% block title_page %}
+
+{% endblock title_page %}
+
+{% block title %}
+    <h3>Listado de clientes</h3>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'core/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css' %}">
+
+    <script src="{% static 'core/plugins/sweetalert2/sweetalert2.min.js' %}"></script>
+
+    {% if messages %}
+        {% for m in messages %}
+            {% if m.tags == 'success' %}
+                <script>
+                    Swal.fire({
+                        "title": "{{ m }}",
+                        "icon": "success",
+                    })
+                </script>
+
+
+            {% endif %}
+            {% if m.tags == 'error' %}
+                <script>
+                    Swal.fire({
+                        "title": "{{ m }}",
+                        "icon": "error",
+                    })
+                </script>
+
+
+            {% endif %}
+            {% if m.tags == 'info' %}
+                <script>
+                    Swal.fire({
+                        "title": "{{ m }}",
+                        "icon": "info",
+                    })
+                </script>
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+
+
+{% endblock title %}
+{% block table_header %}
+    <th>Cliente</th>
+    <th>Teléfono</th>
+    <th>Deuda</th>
+    <th>Foto</th>
+    <th>Geolocalización</th>
+    <th>Opciones</th>
+{% endblock table_header %}
+
+
+{% block table_body %}
+
+    {% for client in clients reversed %}
+        <tr>
+            <td>{{ client.name_local }}</td>
+            <td>{{ client.local_phone }}</td>
+            <td>{{ client.debit }} $</td>
+            <td>
+                {% if client.photo %}
+                    <a target="_blank" href="/media/{{ client.photo }}">Foto</a>
+                {% else %}
+                    Sin foto
+                {% endif %}
+            </td>
+            <td>
+                {% if client.google_map %}
+                    <a target="_blank" href="{{ client.google_map }}">GoogleMap</a>
+                {% else %}
+                    Sin googleMap
+                {% endif %}
+            </td>
+            <td>
+                <a href="{% url 'delivery:new' client.id %}">
+                    <button
+                        type="button"
+                        class="btn btn-inline bg-primary btn-xs">
+                        Nuevo envio
+                    </button>
+                </a>
+
+                <div class="btn-group">
+                    <button type="button" class="btn btn-xs btn-dark dropdown-toggle" data-toggle="dropdown" aria-expanded="false">Más</button>
+                    <span class="sr-only">Toggle Dropdown</span>
+                </button>
+                <div class="dropdown-menu p-2" role="menu" style="margin-right: 150px; z-index: 1111;">
+                    <a class="dropdown-item" href="{% url 'clients:all-delivery' client.id %}">Todos los envios</a>
+                    <a class="dropdown-item" href="{% url 'clients:not-paid-delivery' client.id %}">Envios sin pagar</a>
+                    <a class="dropdown-item" href="{% url 'clients:paid-delivery' client.id %}">Envios pagos</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="{% url 'clients:list-addressee' client.id  %}">Ver consumidores frecuentes</a>
+                    <a class="dropdown-item" href="{% url 'clients:new-addressee' client.id %}">Añadir consumidor frecuente</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="{% url 'clients:list-payment' client.id %}">Ver pagos</a>
+                    <a class="dropdown-item" href="{% url 'clients:new-payment' client.id %}">Añadir pago</a>
+                    <a class="dropdown-item" href="{% url 'clients:date-filter' client.id %}">Filtrar pagos</a>
+                    <a class="dropdown-item" href="{% url 'delivery:delete-less-than-date' client.id %}">Eliminar pagos</a>
+                </div>
+            </div>
+
+            {% if user.is_superuser %}
+                <a href="{% url 'clients:edit' client.id %}">
+                    <button
+                        type="button"
+                        class="btn btn-inline bg-warning btn-xs">
+                        Editar
+                    </button>
+                </a>
+            {% endif %}
+        </td>
+        </tr>
+    {% endfor %}
+
+{% endblock table_body %}
+
+
+
+
