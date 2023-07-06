@@ -1,0 +1,101 @@
+{% extends 'core/list.html' %}
+
+{% block list %}
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'core/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css' %}">
+    <script src="{% static 'core/plugins/sweetalert2/sweetalert2.min.js' %}"></script>
+
+
+    <div class="col-xl-12">
+        <div class="card">
+            <div class="card-header bg-dark p-4">
+                <h3 class="">
+                    {% if workers %}
+                        Listado de trabajadores
+                    {% else %}
+                        No hay trabajadores registrados.
+                    {% endif %}
+                </h3>
+            </div>
+            <!-- /.card-header -->
+            {% if workers %}
+                <div class="card-body p-0">
+                    <table class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th>Nombre</th>
+                                <th>Apellido</th>
+                                <!-- <th>Estado</th> -->
+                                {% if user.is_superuser %}
+                                    <th>Opciones</th>
+                                {% endif %}
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for worker in workers reversed %}
+                                <tr>
+                                    <td>{{ worker.name }}</td>
+                                    <td>{{ worker.last_name }}</td>
+                                    <!-- <td>{ worker.status|yesno:'activo,inactivo' }}</td> -->
+                                    <td>
+                                        <a href="{% url 'workers:list-activity' worker.id %}">
+                                            <button
+                                                type="button"
+                                                class="btn  bg-success btn-xs">
+                                                Ver actividad
+                                            </button>
+                                        </a>
+
+
+                                        {% if user.is_superuser %}
+                                            <a href="{% url 'workers:edit' worker.id %}">
+                                                <button
+                                                    type="button"
+                                                    class="btn bg-warning btn-xs">
+                                                    Editar
+                                                </button>
+                                            </a>
+
+
+                                            <a href="{% url 'workers:delete' worker.id %}">
+                                                <button
+                                                    type="button"
+                                                    class="btn  bg-danger btn-xs">
+                                                    Eliminar
+                                                </button>
+                                            </a>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                            {% if messages %}
+                                {% for m in messages %}
+                                    <script>
+                                        Swal.fire({
+                                            "title": "{{ m }}",
+                                            "icon": "success",
+                                        })
+                                    </script>
+                                {% endfor %}
+                            {% endif %}
+
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- /.card-body -->
+                <div class="card-footer clearfix">
+                    <ul class="pagination pagination-sm m-0 float-right">
+                        <li class="page-item"><a class="page-link" href="#">«</a></li>
+                        <li class="page-item"><a class="page-link" href="#">1</a></li>
+                        <li class="page-item"><a class="page-link" href="#">2</a></li>
+                        <li class="page-item"><a class="page-link" href="#">3</a></li>
+                        <li class="page-item"><a class="page-link" href="#">»</a></li>
+                    </ul>
+                </div>
+            {% endif %}
+        </div>
+        <!-- /.card -->
+    </div>
+
+{% endblock list %}

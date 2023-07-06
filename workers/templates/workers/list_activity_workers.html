@@ -1,0 +1,55 @@
+{% extends 'core/list_datatable_without_pdf.html' %}
+
+{% load static %}
+
+{% block title %}
+    <h4 class="title">
+        {% if activity_worker %}
+            {{ title }}
+        {% else %}
+            No hay envios {{ title_not_delivery }}.
+        {% endif %}
+        <link rel="stylesheet" href="{% static 'core/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css' %}">
+        <script src="{% static 'core/plugins/sweetalert2/sweetalert2.min.js' %}"></script>
+
+        {% if messages %}
+            {% for m in messages %}
+                <script>
+                    Swal.fire({
+                        "title": "{{ m }}",
+                        "icon": "success",
+                    })
+                </script>
+            {% endfor %}
+        {% endif %}
+
+
+    </h4>
+{% endblock title %}
+{% block table_header %}
+        <th>Cliente</th>
+        <th>Consumidor</th>
+        <th>Dirección</th>
+        <th>Servicio</th>
+        <th>Fecha</th>
+        <th>Hora</th>
+        <th>Estado</th>
+        <th>Dinero Recibido</th>
+{% endblock table_header %}
+
+{% block table_body %}
+    {% for delivery in activity_worker reversed %}
+        <tr>
+            <td>{{ delivery.origin }}</td>
+            <td>{{ delivery.addressee_data }}</td>
+            <td>{{ delivery.destiny }}</td>
+            <td>{{ delivery.type_service }}</td>
+            <td>{{ delivery.date }}</td>
+            <td>{{ delivery.time }}</td>
+            <td>{{ delivery.status_delivery|yesno:'Pagado,Pendiente' }}</td>
+            <td>{{ delivery.recieved_money }}</td>
+        </tr>
+    {% endfor %}
+{% endblock table_body %}
+
+
